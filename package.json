@@ -1,0 +1,16 @@
+{
+  "name": "comicverse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+  "tailwind": "npx @tailwindcss/cli -i ./frontend/src/input.css -o ./frontend/static/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "tailwindcss": "^4.3.1"
+  }
+}

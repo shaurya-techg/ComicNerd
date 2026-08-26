@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<div
+    class="relative min-h-[80vh] flex items-center justify-center rounded-2xl overflow-hidden"
+>
+
+    <!-- Background Image -->
+    <div
+        class="absolute inset-0 bg-cover bg-center"
+        style="background-image: url('/static/images/home-bgimage.jpg');"
+    ></div>
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/70"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center px-6">
+
+        <h1 class="text-6xl md:text-8xl font-bold text-yellow-300">
+            ComicNerd
+        </h1>
+
+        <p class="text-gray-200 mt-6 text-xl md:text-2xl">
+            Discover, Collect and Review Your Favourite Comics!
+        </p>
+
+        {% if not user.is_authenticated %}
+
+        <div class="mt-10 flex justify-center gap-4">
+
+            <a
+                href="{% url 'login' %}"
+                class="bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+            >
+                Login
+            </a>
+
+            <a
+                href="{% url 'register' %}"
+                class="border border-yellow-500 px-6 py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition"
+            >
+                Register
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- TRENDING COMICS -->
+<section class="mt-16">
+
+    <h2 class="text-3xl font-bold text-yellow-300 mb-6">
+         Trending Comics
+    </h2>
+
+    {% if trending_comics %}
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        {% for comic in trending_comics %}
+
+        <div
+            class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition duration-300"
+        >
+
+            <img
+                src="{{ comic.image.medium_url }}"
+                alt="{{ comic.name }}"
+                class="w-full h-80 object-cover"
+            >
+
+            <div class="p-4">
+
+                <h3 class="font-bold text-lg">
+                    {{ comic.name }}
+                </h3>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="bg-gray-900 rounded-xl p-8">
+
+        <p class="text-gray-400">
+            No trending comics available.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+<!-- LATEST RELEASES -->
+<section class="mt-16">
+
+    <h2 class="text-3xl font-bold text-yellow-300 mb-6">
+         Latest Releases
+    </h2>
+
+    {% if latest_comics %}
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        {% for comic in latest_comics %}
+
+        <div
+            class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition duration-300"
+        >
+
+            <img
+                src="{{ comic.image.medium_url }}"
+                alt="{{ comic.volume.name }}"
+                class="w-full h-80 object-cover"
+            >
+
+            <div class="p-4">
+
+                <h3 class="font-bold text-lg">
+                    {{ comic.volume.name }}
+                </h3>
+
+                <p class="text-sm text-gray-400 mt-2">
+                    Issue #{{ comic.issue_number }}
+                </p>
+
+                {% if comic.cover_date %}
+                <p class="text-xs text-gray-500 mt-1">
+                    {{ comic.cover_date }}
+                </p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="bg-gray-900 rounded-xl p-8">
+
+        <p class="text-gray-400">
+            No latest releases available.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+<!-- CONTINUE YOUR COLLECTION -->
+{% if user.is_authenticated %}
+
+<section class="mt-16 mb-20">
+
+    <h2 class="text-3xl font-bold text-yellow-300 mb-6">
+         Continue Your Collection
+    </h2>
+
+    {% if collection_preview %}
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        {% for comic in collection_preview %}
+
+        <div
+            class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition duration-300"
+        >
+
+            <img
+                src="{{ comic.cover_url }}"
+                alt="{{ comic.comic_title }}"
+                class="w-full h-80 object-cover"
+            >
+
+            <div class="p-4">
+
+                <h3 class="font-bold text-lg">
+                    {{ comic.comic_title }}
+                </h3>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="bg-gray-900 rounded-xl p-8">
+
+        <p class="text-gray-400">
+            Start building your collection by searching for comics.
+        </p>
+
+        <a
+            href="{% url 'comic_search' %}"
+            class="inline-block mt-4 bg-indigo-600 px-5 py-2 rounded-lg hover:bg-indigo-700"
+        >
+            Search Comics
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endif %}
+
+{% endblock %}

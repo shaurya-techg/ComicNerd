@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <div class="bg-gray-900 rounded-2xl p-8 shadow-lg">
+
+        <h1 class="text-4xl font-bold text-yellow-300">
+            Welcome, {{ request.user.username }}
+        </h1>
+
+        <p class="text-gray-400 mt-2">
+            Manage your comics, collections and reviews.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-10">
+
+            <div class="bg-gray-800 p-6 rounded-xl text-center">
+
+                <h2 class="text-4xl font-bold text-indigo-400">
+                    {{ collection_count }}
+                </h2>
+
+                <p class="text-gray-300 mt-2">
+                    Comics Collected
+                </p>
+
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-xl text-center">
+
+                <h2 class="text-4xl font-bold text-indigo-400">
+                    {{ review_count }}
+                </h2>
+
+                <p class="text-gray-300 mt-2">
+                    Reviews Written
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="mt-10">
+
+            <h2 class="text-2xl font-bold text-yellow-300 mb-4">
+                Recent Reviews
+            </h2>
+
+            {% if recent_reviews %}
+
+                <div class="space-y-4">
+
+                    {% for review in recent_reviews %}
+
+                    <div class="bg-gray-800 rounded-lg p-4">
+
+                        <div class="flex justify-between">
+
+                            <h3 class="font-bold">
+                                {{ review.comic_title }}
+                            </h3>
+
+                            <span>
+                                ⭐ {{ review.rating }}/5
+                            </span>
+
+                        </div>
+
+                        <p class="text-gray-400 mt-2">
+                            {{ review.review_text }}
+                        </p>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="text-gray-400">
+                    You haven't reviewed any comics yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        <div class="flex gap-4 mt-10">
+
+            <a
+                href="{% url 'comic_search' %}"
+                class="bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700"
+            >
+                Browse Comics
+            </a>
+
+            <a
+                href="{% url 'my_collection' %}"
+                class="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-400"
+            >
+                My Collection
+            </a>
+
+            <a
+                href="{% url 'logout' %}"
+                class="bg-red-600 px-6 py-3 rounded-lg hover:bg-red-700"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

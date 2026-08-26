@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Comic Cover -->
+        <div>
+
+            <img
+                src="{{ comic.image.super_url }}"
+                alt="{{ comic.volume.name }}"
+                class="rounded-xl shadow-lg"
+            >
+
+        </div>
+
+        <!-- Comic Information -->
+        <div class="md:col-span-2">
+
+            <h1 class="text-5xl font-bold text-yellow-300">
+                {{ comic.volume.name }}
+            </h1>
+
+            <div class="mt-4">
+
+                <span
+                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold"
+                >
+                    ⭐ {{ average_rating }}/5
+                </span>
+
+            </div>
+
+            <p class="mt-6 text-gray-400">
+                Issue #{{ comic.issue_number }}
+            </p>
+
+            <p class="mt-2 text-gray-400">
+                Release Date:
+                {{ comic.cover_date }}
+            </p>
+
+            <div class="mt-8">
+
+                <a
+                    href="{% url 'add_to_collection' %}?comic_id={{ comic.id }}&title={{ comic.volume.name }}&cover_url={{ comic.image.medium_url }}"
+                    class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition"
+                >
+                    Add To Collection
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Review Form -->
+
+    <hr class="my-12 border-gray-700">
+
+    <h2 class="text-3xl font-bold text-yellow-300 mb-6">
+        Leave A Review
+    </h2>
+
+    <form
+        method="POST"
+        action="{% url 'add_review' %}"
+        class="space-y-4"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            name="comic_id"
+            value="{{ comic.id }}"
+        >
+
+        <input
+            type="hidden"
+            name="comic_title"
+            value="{{ comic.volume.name }}"
+        >
+
+        <div>
+
+            <label class="block mb-2 text-gray-300">
+                Rating
+            </label>
+
+            <select
+                name="rating"
+                class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700"
+            >
+                <option value="5">★★★★★ (5)</option>
+                <option value="4">★★★★☆ (4)</option>
+                <option value="3">★★★☆☆ (3)</option>
+                <option value="2">★★☆☆☆ (2)</option>
+                <option value="1">★☆☆☆☆ (1)</option>
+            </select>
+
+        </div>
+
+        <div>
+
+            <label class="block mb-2 text-gray-300">
+                Review
+            </label>
+
+            <textarea
+                name="review_text"
+                rows="5"
+                placeholder="What did you think about this comic?"
+                class="w-full p-4 bg-gray-800 rounded-lg border border-gray-700"
+            ></textarea>
+
+        </div>
+
+        <button
+            type="submit"
+            class="bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+        >
+            Submit Review
+        </button>
+
+    </form>
+
+    <!-- Community Reviews -->
+
+    <hr class="my-12 border-gray-700">
+
+    <h2 class="text-3xl font-bold text-yellow-300 mb-6">
+        Community Reviews
+    </h2>
+
+    {% if reviews %}
+
+        <div class="space-y-6">
+
+            {% for review in reviews %}
+
+            <div
+                class="bg-gray-900 p-6 rounded-xl border border-gray-800"
+            >
+
+                <div class="flex justify-between items-center">
+
+                    <span class="font-bold text-yellow-300">
+                        {{ review.username }}
+                    </span>
+
+                    <span class="text-white">
+                        ⭐ {{ review.rating }}/5
+                    </span>
+
+                </div>
+
+                <p class="mt-4 text-gray-300">
+                    {{ review.review_text }}
+                </p>
+
+                <p class="mt-4 text-xs text-gray-500">
+                    {{ review.created_at }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="bg-gray-900 p-6 rounded-xl">
+
+            <p class="text-gray-400">
+                No reviews yet. Be the first reviewer!
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

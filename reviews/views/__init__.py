@@ -1,0 +1,1 @@
+from .review import add_review_view

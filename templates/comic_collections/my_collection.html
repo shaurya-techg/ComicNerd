@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+
+            <h1 class="text-5xl font-bold text-yellow-300">
+                 My Collection
+            </h1>
+
+            <p class="text-gray-400 mt-2">
+                Your personal comic library.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'comic_search' %}"
+            class="bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+        >
+            Browse Comics
+        </a>
+
+    </div>
+
+    <!-- Search Bar -->
+
+    <form method="GET" class="mb-8">
+
+        <div class="flex gap-3">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                placeholder=" Search your collection..."
+                class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            >
+
+            <button
+                type="submit"
+                class="bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-300 transition font-semibold"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+    {% if comics %}
+
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+            {% for comic in comics %}
+
+            <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition">
+
+                <a href="{% url 'comic_detail' comic.comic_id %}">
+
+                    <img
+                        src="{{ comic.cover_url }}"
+                        alt="{{ comic.comic_title }}"
+                        class="w-full h-80 object-cover hover:scale-105 transition duration-300"
+                    >
+
+                </a>
+
+                <div class="p-5">
+
+                    <a href="{% url 'comic_detail' comic.comic_id %}">
+
+                        <h2 class="text-xl font-bold hover:text-yellow-300 transition">
+                            {{ comic.comic_title }}
+                        </h2>
+
+                    </a>
+
+                    <p class="text-sm text-gray-400 mt-2">
+                        Added:
+                        {{ comic.added_at|date:"d M Y" }}
+                    </p>
+
+                    <div class="mt-5">
+
+                        <a
+                            href="{% url 'remove_from_collection' comic.comic_id %}"
+                            class="w-full block text-center bg-red-600 py-2 rounded-lg hover:bg-red-700 transition"
+                        >
+                            Remove
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="bg-gray-900 rounded-xl p-10 text-center mt-10">
+
+            {% if query %}
+
+                <h2 class="text-3xl font-bold text-yellow-300">
+                    No comics found
+                </h2>
+
+                
+
+                <p class="text-gray-400 mt-4">
+                    We couldn't find any comics matching your search.     
+                </p>
+            {% else %}
+
+                <h2 class="text-3xl font-bold text-yellow-300">
+                     Your shelf is empty!
+                </h2>
+
+                <p class="text-gray-400 mt-4">
+                    Start exploring comics and build your own collection.
+                </p>
+
+                <a
+                    href="{% url 'comic_search' %}"
+                    class="inline-block mt-6 bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700"
+                >
+                    Browse Comics
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
