@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from config.views import home_view
+from config.views import home_view, health_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +26,12 @@ urlpatterns = [
         "",
         home_view,
         name="home"
+    ),
+    
+    path(
+        "health/",
+        health_view,
+        name="health",
     ),
 
     path(
@@ -52,5 +58,5 @@ urlpatterns = [
         "ai/",
         include("ai.urls")
     ),
-    
+      
 ]

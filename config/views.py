@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from comic_collections.documents import ComicCollection
 from comics.services.comicvine import (get_latest_comics,get_trending_comics)
@@ -52,3 +53,9 @@ def home_view(request):
             "latest_comics": latest_comics,
         }
     )
+    
+def health_view(request):
+
+    return JsonResponse({
+        "status": "ok"
+    })
