@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: comicnerd
+  namespace: comicnerd
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: comicnerd
+
+  template:
+    metadata:
+      labels:
+        app: comicnerd
+
+    spec:
+      containers:
+
+        - name: comicnerd
+
+          image: shaurya1607/comicnerd:v6
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+          env:
+
+            - name: ALLOWED_HOSTS
+              value: "43.205.218.159,10.0.1.251,localhost,127.0.0.1"
+
+            - name: POSTGRES_HOST
+              value: "postgres"
+
+            - name: POSTGRES_PORT
+              value: "5432"
+
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_DB
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+
+          envFrom:
+            - secretRef:
+                name: comicnerd-secrets
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "768Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+
+              httpHeaders:
+                - name: Host
+                  value: localhost
+
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+
+              httpHeaders:
+                - name: Host
+                  value: localhost
+
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: comicnerd
+  namespace: comicnerd
+
+spec:
+  selector:
+    app: comicnerd
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+
+  type: ClusterIP

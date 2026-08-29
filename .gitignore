@@ -22,3 +22,14 @@ db.sqlite3
 
 #static files
 staticfiles/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# Kubernetes secrets
+kubernetes/secrets.yaml
+kubernetes/*secret*.yaml
+!kubernetes/secrets.example.yaml
