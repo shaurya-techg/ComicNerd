@@ -1,4 +1,5 @@
-// Webhook trigger test
+def dockerImage
+
 pipeline {
     agent any
 
