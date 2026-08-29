@@ -4,12 +4,13 @@
 
 <div class="max-w-7xl mx-auto">
 
-    <div class="flex justify-between items-center mb-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 mb-8">
 
         <div>
 
-            <h1 class="text-5xl font-bold text-yellow-300">
-                 My Collection
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-300">
+                My Collection
             </h1>
 
             <p class="text-gray-400 mt-2">
@@ -20,7 +21,7 @@
 
         <a
             href="{% url 'comic_search' %}"
-            class="bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+            class="bg-indigo-600 px-5 py-3 rounded-lg hover:bg-indigo-700 transition text-center self-start sm:self-auto"
         >
             Browse Comics
         </a>
@@ -28,17 +29,16 @@
     </div>
 
     <!-- Search Bar -->
-
     <form method="GET" class="mb-8">
 
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
 
             <input
                 type="text"
                 name="q"
                 value="{{ query }}"
-                placeholder=" Search your collection..."
-                class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="Search your collection..."
+                class="flex-1 min-w-0 bg-gray-800 border border-gray-700 rounded-lg px-4 sm:px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
 
             <button
@@ -54,7 +54,7 @@
 
     {% if comics %}
 
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
 
             {% for comic in comics %}
 
@@ -65,16 +65,16 @@
                     <img
                         src="{{ comic.cover_url }}"
                         alt="{{ comic.comic_title }}"
-                        class="w-full h-80 object-cover hover:scale-105 transition duration-300"
+                        class="w-full h-72 sm:h-80 object-cover hover:scale-105 transition duration-300"
                     >
 
                 </a>
 
-                <div class="p-5">
+                <div class="p-4 sm:p-5">
 
                     <a href="{% url 'comic_detail' comic.comic_id %}">
 
-                        <h2 class="text-xl font-bold hover:text-yellow-300 transition">
+                        <h2 class="text-lg sm:text-xl font-bold hover:text-yellow-300 transition">
                             {{ comic.comic_title }}
                         </h2>
 
@@ -106,23 +106,22 @@
 
     {% else %}
 
-        <div class="bg-gray-900 rounded-xl p-10 text-center mt-10">
+        <div class="bg-gray-900 rounded-xl p-6 sm:p-10 text-center mt-8 sm:mt-10">
 
             {% if query %}
 
-                <h2 class="text-3xl font-bold text-yellow-300">
+                <h2 class="text-2xl sm:text-3xl font-bold text-yellow-300">
                     No comics found
                 </h2>
 
-                
-
                 <p class="text-gray-400 mt-4">
-                    We couldn't find any comics matching your search.     
+                    We couldn't find any comics matching your search.
                 </p>
+
             {% else %}
 
-                <h2 class="text-3xl font-bold text-yellow-300">
-                     Your shelf is empty!
+                <h2 class="text-2xl sm:text-3xl font-bold text-yellow-300">
+                    Your shelf is empty!
                 </h2>
 
                 <p class="text-gray-400 mt-4">
@@ -131,7 +130,7 @@
 
                 <a
                     href="{% url 'comic_search' %}"
-                    class="inline-block mt-6 bg-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-700"
+                    class="inline-block mt-6 bg-indigo-600 px-5 sm:px-6 py-3 rounded-lg hover:bg-indigo-700"
                 >
                     Browse Comics
                 </a>

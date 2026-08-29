@@ -4,76 +4,81 @@
 
 <div class="max-w-7xl mx-auto">
 
-    <h1 class="text-4xl font-bold text-yellow-300 mb-6">
+    <!-- Page Title -->
+    <h1 class="text-3xl sm:text-4xl font-bold text-yellow-300 mb-5 sm:mb-6">
         Search Comics
     </h1>
 
+    <!-- Search Form -->
     <form method="GET" class="mb-8">
 
-    <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
 
-        <input
-            type="text"
-            name="q"
-            value="{{ query|default:'' }}"
-            placeholder="Search Batman, Spider-Man, Deadpool..."
-            class="flex-1 p-5 rounded-xl bg-gray-800 border border-gray-700 text-lg"
-        >
+            <input
+                type="text"
+                name="q"
+                value="{{ query|default:'' }}"
+                placeholder="Search Batman, Spider-Man, Deadpool..."
+                class="flex-1 min-w-0 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-gray-800 border border-gray-700 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            >
 
-        <button
-            type="submit"
-            class="bg-yellow-400 text-black px-8 rounded-xl font-semibold"
-        >
-            Search
-        </button>
+            <button
+                type="submit"
+                class="bg-yellow-400 text-black px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-yellow-300 transition"
+            >
+                Search
+            </button>
 
-    </div>
+        </div>
 
-</form>
+    </form>
 
     {% if results %}
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-    {% for comic in results %}
+            {% for comic in results %}
 
-        <a href="{% url 'comic_detail' comic.id %}"class="block bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
+                <a
+                    href="{% url 'comic_detail' comic.id %}"
+                    class="block bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition"
+                >
 
-            <img
-                src="{{ comic.image.medium_url }}"
-                alt="Comic Cover"
-                class="w-full h-80 object-cover"
-            >
+                    <img
+                        src="{{ comic.image.medium_url }}"
+                        alt="Comic Cover"
+                        class="w-full h-72 sm:h-80 object-cover"
+                    >
 
-            <div class="p-4">
+                    <div class="p-4">
 
-                <h2 class="font-bold text-yellow-300 text-lg">
+                        <h2 class="font-bold text-yellow-300 text-lg">
 
-                    {% if comic.name %}
-                        {{ comic.name }}
-                    {% else %}
-                        Issue #{{ comic.issue_number }}
-                    {% endif %}
+                            {% if comic.name %}
+                                {{ comic.name }}
+                            {% else %}
+                                Issue #{{ comic.issue_number }}
+                            {% endif %}
 
-                </h2>
+                        </h2>
 
-                <p class="text-gray-400 mt-2">
-                    {{ comic.volume.name }}
-                </p>
+                        <p class="text-gray-400 mt-2">
+                            {{ comic.volume.name }}
+                        </p>
 
-                <p class="text-sm text-gray-500 mt-2">
-                    {{ comic.cover_date }}
-                </p>
+                        <p class="text-sm text-gray-500 mt-2">
+                            {{ comic.cover_date }}
+                        </p>
 
-            </div>
+                    </div>
 
-        </a>
+                </a>
 
-    {% endfor %}
+            {% endfor %}
 
-</div>
+        </div>
 
-{% endif %}
+    {% endif %}
 
 </div>
 
