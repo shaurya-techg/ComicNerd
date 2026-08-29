@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ComicNerd</title>
 
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
@@ -14,20 +15,46 @@
 <body class="bg-gray-950 text-white min-h-screen">
 
     <!-- Navbar -->
-
     <nav class="bg-gray-900 border-b border-gray-800">
 
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
 
-            <!-- Logo -->
+            <!-- Top Section -->
+            <div class="flex justify-between items-center">
 
-            <a href="/" class="text-2xl font-bold text-yellow-300">
-                ComicNerd
-            </a>
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-bold text-yellow-300">
+                    ComicNerd
+                </a>
+
+                <!-- Authentication -->
+                <div class="flex items-center">
+
+                    {% if user.is_authenticated %}
+
+                        <a href="{% url 'profile' %}">
+                            <div
+                                class="w-10 h-10 rounded-full bg-yellow-400 text-black font-bold flex items-center justify-center hover:scale-105 transition"
+                            >
+                                {{ request.user.username|first|upper }}
+                            </div>
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}"
+                           class="hover:text-yellow-300">
+                            Login
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
 
             <!-- Navigation Links -->
-
-            <div class="flex gap-6">
+            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm sm:text-base">
 
                 <a href="/" class="hover:text-yellow-300">
                     Home
@@ -40,36 +67,10 @@
                 <a href="/comic_collections/" class="hover:text-yellow-300">
                     Collections
                 </a>
+
                 <a href="{% url 'ai_chat' %}" class="hover:text-yellow-300">
                     AI Chat
                 </a>
-
-            </div>
-
-            <!-- Authentication Section -->
-
-            <div class="flex items-center gap-4">
-
-                {% if user.is_authenticated %}
-
-                    <a href="{% url 'profile' %}">
-
-                        <div
-                            class="w-10 h-10 rounded-full bg-yellow-400 text-black font-bold flex items-center justify-center hover:scale-105 transition"
-                        >
-                            {{ request.user.username|first|upper }}
-                        </div>
-
-                    </a>
-
-                {% else %}
-
-                    <a href="{% url 'login' %}"
-                       class="hover:text-yellow-300">
-                        Login
-                    </a>
-
-                {% endif %}
 
             </div>
 
@@ -78,8 +79,7 @@
     </nav>
 
     <!-- Main Content -->
-
-    <main class="max-w-7xl mx-auto px-6 py-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
         {% block content %}
         {% endblock %}
