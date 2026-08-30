@@ -2,13 +2,32 @@
 
 {% block content %}
 
-<div class="flex justify-center items-center min-h-[70vh]">
+<div class="flex justify-center items-center min-h-[70vh] px-4">
 
-    <div class="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-lg">
+    <div class="w-full max-w-md bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg">
 
         <h2 class="text-3xl font-bold text-center text-yellow-300 mb-6">
             Create Account
         </h2>
+
+        <!-- Django Messages -->
+        {% if messages %}
+            {% for message in messages %}
+
+                <div class="mb-4 p-3 rounded-lg
+                    {% if message.tags == 'error' %}
+                        bg-red-900/50 border border-red-500 text-red-200
+                    {% elif message.tags == 'success' %}
+                        bg-green-900/50 border border-green-500 text-green-200
+                    {% else %}
+                        bg-gray-800 border border-gray-700 text-gray-200
+                    {% endif %}
+                ">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+        {% endif %}
 
         <form method="POST">
 
@@ -46,7 +65,7 @@
 
             <button
                 type="submit"
-                class="w-full bg-yellow-500 text-black py-3 rounded-lg hover:bg-yellow-400"
+                class="w-full bg-yellow-500 text-black py-3 rounded-lg hover:bg-yellow-400 transition"
             >
                 Register
             </button>

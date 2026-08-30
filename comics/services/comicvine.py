@@ -4,11 +4,29 @@ from django.conf import settings
 
 
 BASE_URL = "https://comicvine.gamespot.com/api"
+TIMEOUT = 10
 
-#for searching comics based on a query string.
+
+def make_request(endpoint, params):
+
+    url = f"{BASE_URL}{endpoint}"
+
+    response = requests.get(
+        url,
+        params=params,
+        headers={
+            "User-Agent": "ComicNerd"
+        },
+        timeout=TIMEOUT
+    )
+
+    response.raise_for_status()
+
+    return response.json()
+
+
+# Search comics based on a query string
 def search_comics(query):
-
-    url = f"{BASE_URL}/search/"
 
     params = {
         "api_key": settings.COMICVINE_API_KEY,
@@ -17,38 +35,28 @@ def search_comics(query):
         "resources": "issue",
     }
 
-    response = requests.get(
-        url,
-        params=params,
-        headers={
-            "User-Agent": "ComicNerd"
-        }
+    return make_request(
+        "/search/",
+        params
     )
 
-    return response.json()
-#to get details of a specific comic issue using its ID.
-def get_comic_details(issue_id):
 
-    url = f"{BASE_URL}/issue/4000-{issue_id}/"
+# Get details of a specific comic issue using its ID
+def get_comic_details(issue_id):
 
     params = {
         "api_key": settings.COMICVINE_API_KEY,
         "format": "json",
     }
 
-    response = requests.get(
-        url,
-        params=params,
-        headers={
-            "User-Agent": "ComicNerd"
-        }
+    return make_request(
+        f"/issue/4000-{issue_id}/",
+        params
     )
 
-    return response.json()
-#to get latest comics.
-def get_latest_comics():
 
-    url = f"{BASE_URL}/issues/"
+# Get latest comics
+def get_latest_comics():
 
     params = {
         "api_key": settings.COMICVINE_API_KEY,
@@ -57,19 +65,14 @@ def get_latest_comics():
         "limit": 8,
     }
 
-    response = requests.get(
-        url,
-        params=params,
-        headers={
-            "User-Agent": "ComicNerd"
-        }
+    return make_request(
+        "/issues/",
+        params
     )
 
-    return response.json()
-#trending comics(waise toh comicvine ka koi trending endpoint hai nahi,but ye section dekhne mein accha lagega)
-def get_trending_comics():
 
-    url = f"{BASE_URL}/volumes/"
+# Get recently updated volumes for the Trending section
+def get_trending_comics():
 
     params = {
         "api_key": settings.COMICVINE_API_KEY,
@@ -78,12 +81,7 @@ def get_trending_comics():
         "limit": 8,
     }
 
-    response = requests.get(
-        url,
-        params=params,
-        headers={
-            "User-Agent": "ComicNerd"
-        }
+    return make_request(
+        "/volumes/",
+        params
     )
-
-    return response.json()
